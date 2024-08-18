@@ -1,2 +1,2 @@
 # INTG1001-Pensum
- Raske forklaringa med nokokre oppgaver for pensum i INGT1001
+ Raske forklaringa med nokre oppgaver for pensum i INGT1001
