@@ -94,25 +94,79 @@ print(not False)       # True
 
 ### Operatorpresedens og Parentesbruk
 
-Operasjoner utføres i følgende rekkefølge:
-1. Parenteser `()`
-2. Eksponentiering `**`
-3. Negasjon og bitvis NOT `-` og `~`
-4. Multiplikasjon, divisjon, etc `*`, `/`, `//`, `%`
-5. Addisjon og subtraksjon `+`, `-`
-6. Skift `<<`, `>>`
-7. Bitvis AND, XOR, OR `&`, `^`, `|`
-8. Komparasjoner `<`, `<=`, `>`, `>=`, `==`, `!=`
-9. Logiske NOT, AND, OR `not`, `and`, `or`
+I Python, som i mange andre programmeringsspråk, er det viktig å forstå operatorpresedens for å kunne skrive korrekt kode som utfører operasjonar i den rekkefølga du forventar. Operatorpresedens bestemmer i kva rekkefølge operasjonane i eit uttrykk blir evaluert, spesielt når fleire operatorar er involvert. Dersom du ikkje er bevisst på presedensen, kan koden gi uventa resultat. Du kan alltid bruke parentesar `()` for å tvinge fram ein annan rekkefølge på operasjonane enn det som er bestemt av den innebygde presedensen.
 
-Eksempel:
+#### Operasjonar blir utført i følgande rekkefølge:
+
+1. **Parenteser `()`**:
+   - Uttrykk inne i parentesar blir alltid evaluert først. Dette gir deg moglegheit til å overstyre den innebygde presedensen og tvinge fram ein spesifikk rekkefølge av operasjonar.
+   
+2. **Eksponentiering `**`**:
+   - Eksponentiering blir utført etter parentesar, men før andre aritmetiske operasjonar som multiplikasjon og divisjon.
+
+3. **Negasjon og bitvis NOT `-` og `~`**:
+   - Einærs operatorar, som negativ (-) og bitvis NOT (`~`), blir evaluert før binære aritmetiske operatorar.
+
+4. **Multiplikasjon, divisjon, gulvdivisjon, modulus `*`, `/`, `//`, `%`**:
+   - Desse operasjonane har høgare presedens enn addisjon og subtraksjon, men lågare enn eksponentiering.
+
+5. **Addisjon og subtraksjon `+`, `-`**:
+   - Evaluert etter multiplikasjon og divisjon.
+
+6. **Skiftoperasjonar `<<`, `>>`**:
+   - Utfører bitvis forskyving av bitmønster til venstre eller høgre.
+
+7. **Bitvise operatorar AND, XOR, OR `&`, `^`, `|`**:
+   - Utfører operasjonar bit for bit, med AND (`&`), XOR (`^`), og OR (`|`) som blir evaluert i denne rekkefølga.
+
+8. **Komparasjonar `<`, `<=`, `>`, `>=`, `==`, `!=`**:
+   - Brukt til å samanlikne verdiar, og evaluert etter aritmetiske og bitvise operasjonar.
+
+9. **Logiske NOT, AND, OR `not`, `and`, `or`**:
+   - Evaluert til slutt, med `not` som har høgast presedens, etterfulgt av `and`, og deretter `or`.
+
+#### Eksempel:
 ```python
 # Uten parenteser
-result = 3 + 4 * 2  # result blir 11, ikke 14
+result = 3 + 4 * 2  # result blir 11, ikkje 14
+```
+**Forklaring**:
+- Her blir multiplikasjonen `4 * 2` utført først, og deretter blir resultatet lagt til `3`, som gir `11`.
 
+```python
 # Med parenteser
 result_parens = (3 + 4) * 2  # result_parens blir 14
 ```
+**Forklaring**:
+- Ved å bruke parentesar, blir `3 + 4` evaluert først, og deretter blir resultatet multiplisert med `2`, som gir `14`.
+
+### Kva skjer utan rett bruk av parentesar?
+
+Feil forståing av operatorpresedens kan føre til feil i programmet som kan vere vanskelege å finne, spesielt i meir komplekse uttrykk. La oss sjå på eit meir avansert eksempel:
+
+```python
+x = 2
+y = 3
+z = 4
+
+result = x + y * z ** 2
+```
+
+**Forklaring**:
+- Her vil `z ** 2` bli evaluert først (fordi eksponentiering har høgare presedens), deretter `y * (z ** 2)`, og til slutt vil resultatet bli lagt til `x`.
+- Dette gir følgande rekkefølge: `2 + 3 * (4 ** 2) = 2 + 3 * 16 = 2 + 48 = 50`.
+
+Men om du ønskar å prioritere addisjonen før multiplikasjonen og eksponentieringa, kan du bruke parentesar:
+
+```python
+result_parens = (x + y) * z ** 2
+```
+
+**Forklaring**:
+- Med parentesar rundt `x + y`, vil denne delen bli evaluert først, deretter vil resultatet bli multiplisert med `z ** 2`.
+- Dette gir følgande rekkefølge: `(2 + 3) * (4 ** 2) = 5 * 16 = 80`.
+
+Å forstå og bruke riktig operatorpresedens er essensielt for å unngå logiske feil og sikre at uttrykka dine gir dei forventa resultata.
 
 ## Variable og Tilordning
 
@@ -125,47 +179,84 @@ x = 10
 
 ### Sammensatt Tilordning
 
-De sammensatte tilordningsoperatorene kombinerer en aritmetisk operasjon med tilordning:
-- `+=` : Legger til og tildeler.
-- `-=` : Trekker fra og tildeler.
-- `*=` : Multipliserer og tildeler.
-- `/=` : Dividerer og tildeler.
-- `//=` : Heltallsdividerer og tildeler.
-- `%=` : Moduler og tildeler.
-- `**=` : Eksponentierer og tildeler.
+Dei samansette tilordningsoperatorane i Python kombinerer ein aritmetisk operasjon med ei tilordning, slik at verdien av ei variabel kan oppdaterast på ein konsis og effektiv måte. Dette kan gjere koden meir kompakt og lettare å lese.
 
-Eksempel:
+Her er ei oversikt over vanlege samansette tilordningsoperatorar:
+
+- `+=` : Legger til ein verdi og tildeler resultatet tilbake til variabelen.
+- `-=` : Trekker frå ein verdi og tildeler resultatet tilbake til variabelen.
+- `*=` : Multipliserer med ein verdi og tildeler resultatet tilbake til variabelen.
+- `/=` : Dividerer med ein verdi og tildeler resultatet tilbake til variabelen. Resultatet blir eit flyttal (`float`).
+- `//=` : Heiltallsdividerer med ein verdi og tildeler resultatet tilbake til variabelen. Resultatet blir heiltalsdelen av divisjonen.
+- `%=` : Utfører modulusoperasjon (resten av divisjonen) og tildeler resultatet tilbake til variabelen.
+- `**=` : Eksponentierer med ein verdi og tildeler resultatet tilbake til variabelen.
+
+**Eksempel**:
+
 ```python
 x = 5
-x += 3  # x blir 8
-x -= 2  # x blir 6
-x *= 4  # x blir 24
-x /= 6  # x blir 4.0
-x //= 2 # x blir 2.0
-x %= 2  # x blir 0.0
-x **= 3 # x blir 0.0
+x += 3  # x blir 8 (5 + 3)
+x -= 2  # x blir 6 (8 - 2)
+x *= 4  # x blir 24 (6 * 4)
+x /= 6  # x blir 4.0 (24 / 6)
+x //= 2 # x blir 2.0 (4.0 // 2) - heiltallsdivisjon, gir resultat som eit flyttal her
+x %= 2  # x blir 0.0 (2.0 % 2)
+x **= 3 # x blir 0.0 (0.0 ** 3)
 ```
+
+**Merk**:
+- I Python, når du bruker `/=`, vil resultatet alltid vere eit flyttal, sjølv om både operanden og resultatet eigentleg kunne vere heiltal. For eksempel vil `10 /= 2` gi `5.0` og ikkje `5`.
+- Når du bruker `//=` med eit heiltal, vil resultatet vere eit heiltal. Men om `x` allereie er eit flyttal før operasjonen, vil resultatet etter `//=` også vere eit flyttal.
+
+Denne typen samansatte tilordningsoperatorar kan også brukast på andre objekt som lister, sett, og strenger, avhengig av kva type operasjon dei støttar. Til dømes kan `+=` operatoren brukast til å legge til element i ei liste:
+
+```python
+lista = [1, 2, 3]
+lista += [4, 5]  # lista blir [1, 2, 3, 4, 5]
+```
+
+Å bruke samansette tilordningsoperatorar kan bidra til meir konsis og lesbar kode, spesielt når du treng å oppdatere verdien av ei variabel basert på seg sjølv.
 
 ### Tilordninger til Samme vs. Ulike Objekt
 
-Når to variable peker til samme objekt, og objektet er muterbart, vil endringer i én variabel reflektere i den andre.
+I Python kan to variablar peike til det same objektet i minnet, noko som er viktig å forstå, spesielt når ein jobbar med muterbare objekt som lister, ordbøker, eller sett. Når to variablar refererer til det same muterbare objektet, vil alle endringar som blir gjort gjennom éi variabel, også vere synlege gjennom den andre variabelen.
 
-Eksempel:
+#### Tilordning til same objekt
+
+Når du tilordnar ein variabel til ein annan variabel som peiker til det same muterbare objektet, vil begge variablane referere til det same objektet i minnet. Dette betyr at endringar i objektet gjennom éi variabel vil reflektere seg i den andre.
+
+**Eksempel**:
 ```python
 a = [1, 2, 3]
-b = a
+b = a  # b peiker til same objekt som a
 b.append(4)
 print(a)  # [1, 2, 3, 4]
 ```
 
-For å unngå dette kan man bruke `copy()` eller `deepcopy()`:
+**Forklaring**:
+- Når `b = a`, blir ingen ny kopi av lista oppretta. I staden peiker `b` til den same lista som `a`. Dermed, når du legg til `4` i lista via `b.append(4)`, vil endringa også vere synleg via `a`, fordi dei begge peiker til den same lista.
+
+#### Tilordning til ulike objekt
+
+For å lage ein uavhengig kopi av eit muterbart objekt, slik at endringar i ein variabel ikkje påverkar den andre, kan du bruke funksjonar som `copy()` for å lage ein grunn kopi, eller `deepcopy()` for å lage ein dyp kopi dersom objektet inneheld andre muterbare objekt.
+
+**Eksempel med `deepcopy()`**:
 ```python
 from copy import deepcopy
 a = [1, 2, 3]
-b = deepcopy(a)
+b = deepcopy(a)  # b peiker til eit nytt og uavhengig objekt
 b.append(4)
 print(a)  # [1, 2, 3]
 ```
+
+**Forklaring**:
+- Ved å bruke `deepcopy()`, blir ein fullstendig uavhengig kopi av lista `a` oppretta og tildelt `b`. Dette betyr at endringar gjort i `b` (som å legge til `4`) ikkje påverkar `a`. Dermed forblir `a` uendra, medan `b` inneheld den nye verdien.
+
+**Merk**:
+- **Grunn kopi (`copy.copy()`)**: Kopierer berre det ytste nivået av objektet. Hvis objektet inneheld andre muterbare objekt, vil desse ikkje bli kopiert, og endringar i dei vil framleis reflekterast i både originalen og kopien.
+- **Dyp kopi (`copy.deepcopy()`)**: Kopierer heile objektet, inkludert alle muterbare objekt det inneheld. Dette gir full separasjon mellom originalen og kopien, slik at endringar i eitt objekt ikkje påverkar det andre.
+
+Å forstå forskjellen mellom tilordning til same objekt og ulike objekt er avgjerande for å unngå utilsikta sideeffektar i koden din, spesielt når du arbeider med komplekse datastrukturar.
 
 ## Datatyper
 
@@ -206,33 +297,65 @@ print(y)  # 3
 
 ### Forskjell på Muterbare og Immuterbare Datatyper
 
-Muterbare typer kan endres etter opprettelse, f.eks. `list` og `dict`.
-Immuterbare typer kan ikke endres etter opprettelse, f.eks. `tuple` og `string`.
+I Python er det viktig å forstå forskjellen mellom muterbare og immuterbare datatyper, da dette påvirker korleis objekt kan endrast etter at dei er oppretta, og korleis dei oppfører seg når dei blir brukt i tilordningar og funksjonar.
 
-Eksempel:
+#### Muterbare Datatyper
+
+Muterbare typar er datastrukturar som kan endrast etter oppretting. Dette betyr at du kan oppdatere, legge til, eller fjerne element frå desse objekta utan å måtte opprette eit nytt objekt. Typiske eksempel på muterbare typar inkluderer:
+
+- **`list`**: Ei liste der du kan endre individuelle element, legge til nye element, eller fjerne eksisterande.
+- **`dict`**: Ein ordbok der du kan oppdatere eksisterande nøkkel-verdi-par, legge til nye, eller fjerne eksisterande.
+
+**Eksempel på muterbare typar**:
 ```python
 my_list = [1, 2, 3]
 my_list[0] = 9  # Endrer første element til 9
+print(my_list)  # [9, 2, 3]
+```
 
+#### Immuterbare Datatyper
+
+Immuterbare typar kan ikkje endrast etter at dei er oppretta. Dette betyr at dersom du vil endre innhaldet i eit immuterbart objekt, må du opprette eit nytt objekt med dei ønskede verdiane. Typiske eksempel på immuterbare typar inkluderer:
+
+- **`tuple`**: Ein uforanderleg sekvens av element.
+- **`string`**: Ein sekvens av teikn som ikkje kan endrast etter oppretting.
+- **`int`, `float`, `bool`**: Tall- og boolske verdiar som også er immuterbare.
+
+**Eksempel på immuterbare typar**:
+```python
 my_tuple = (1, 2, 3)
 try:
     my_tuple[0] = 9  # Feil! Kan ikke endre innholdet i en tuple
 except TypeError as e:
-    print(e)
+    print(e)  # Output: 'tuple' object does not support item assignment
 ```
 
-Bruk av `copy()` and `deepcopy()` for muterbare data:
+#### Bruk av `copy()` og `deepcopy()` for Muterbare Data
+
+Når du arbeider med muterbare objekt, kan det vere situasjonar der du treng å lage ein kopi av eit objekt. Python tilbyr to metodar for dette: `copy()` for å lage ein grunn kopi og `deepcopy()` for å lage ein dyp kopi.
+
+- **Grunn kopi (`copy.copy()`)**: Kopierer det ytste nivået av objektet. Dersom objektet inneheld andre muterbare objekt, vil desse ikkje bli kopiert, noko som betyr at dei refererer til dei same underobjekta.
+  
+- **Dyp kopi (`copy.deepcopy()`)**: Kopierer heile objektet, inkludert alle muterbare objekt det inneheld. Dette skaper eit heilt uavhengig objekt der endringar i kopien ikkje påverkar originalen.
+
+**Eksempel på bruk av `copy()` og `deepcopy()`**:
 ```python
 from copy import deepcopy
 
 original_list = [1, 2, [3, 4]]
-shallow_copy = original_list.copy()
-deep_copy = deepcopy(original_list)
+shallow_copy = original_list.copy()  # Grunn kopi
+deep_copy = deepcopy(original_list)  # Dyp kopi
 
 shallow_copy[2].append(5)
-print(original_list)  # [1, 2, [3, 4, 5]]
-print(deep_copy)  # [1, 2, [3, 4]]
+print(original_list)  # [1, 2, [3, 4, 5]] - Grunn kopien deler same underliste
+print(deep_copy)  # [1, 2, [3, 4]] - Dyp kopien er uavhengig
 ```
+
+**Forklaring**:
+- Når du bruker `shallow_copy`, vil endringar i den innstøypte lista også reflektere i `original_list`, fordi dei deler same referanse til denne lista.
+- Når du bruker `deep_copy`, vil den innstøypte lista vere ein uavhengig kopi, slik at endringar i kopien ikkje påverkar originalen.
+
+Å forstå forskjellen mellom muterbare og immuterbare objekt er essensielt for å unngå utilsikta endringar i data, spesielt når du arbeider med komplekse datastrukturar eller samarbeider på tvers av ulike delar av eit program.
 
 ## Tallrepresentasjon og Avrundingsfeil
 
@@ -264,45 +387,106 @@ result = a + (b + c)  # Bedre rekkefølge
 
 ### Overflyt og Underflyt
 
-Overflyt inntreffer når et tall er for stort til å representeres av typen:
+Overflyt og underflyt er to vanlege problem som kan oppstå når du arbeider med numeriske berekningar i Python, spesielt når du handterer svært store eller svært små tal.
+
+#### Overflyt
+
+Overflyt skjer når eit tal blir for stort til å kunne representerast av den valde datatype. I Python, som bruker IEEE 754-standarden for flyttalsrepresentasjon, vil store tal som ikkje kan representerast, ofte resultere i ei `OverflowError` eller føre til at resultatet blir `inf` (uendelegheit).
+
+**Eksempel på overflyt**:
 ```python
 import math
 try:
-    result = math.exp(1000)  # Vil gi OverflowError
+    result = math.exp(1000)  # Forsøk på å berekne e^1000
 except OverflowError as e:
-    print(e)
+    print(e)  # Output: math range error
 ```
 
-Underflyt skjer når et tall er for nært null:
+**Forklaring**:
+- I dette eksempelet prøver `math.exp(1000)` å berekne verdien av \(e^{1000}\). Dette talet er ekstremt stort og overstig den øvre grensa for kva som kan representerast som eit flyttal i Python, noko som resulterer i ei `OverflowError`.
+
+#### Underflyt
+
+Underflyt skjer når eit tal blir så nær null at det ikkje kan representerast nøyaktig i flyttalsformatet, og blir derfor avrunda til null. Dette kan skje når ein deler svært små tal eller multipliserer med svært små verdier.
+
+**Eksempel på underflyt**:
 ```python
 underflow_result = 1e-308 / 1e308
 print(underflow_result)  # 0.0
 ```
 
-For å unngå over- og underflyt, kan man skalere problemløsningen slik at operasjonene utføres innenfor representerbare områder.
+**Forklaring**:
+- I dette eksempelet blir eit svært lite tal (`1e-308`) delt på eit svært stort tal (`1e308`). Resultatet er så nær null at det ikkje kan representerast som eit flyttal, og Python avrundar det til `0.0`.
 
-## Oppsummering av Forelesning
-I denne uken har vi gjennomgått uttrykk og variable i Python. Vi har sett på forskjellige typer operatorer og hvordan de brukes, inkludert aritmetiske og logiske operatorer. Vi har også diskutert variabeltilordning, både med enkel og sammensatt tilordning, og sett forskjellen mellom muterbare og immuterbare datatyper samt deres bruk med shallow og deep copy. Avslutningsvis undersøkte vi flyttallsrepresentasjon, avrundingsfeil, og problemene knyttet til overflyt og underflyt.
+#### Unngåing av Overflyt og Underflyt
+
+For å unngå problem med overflyt og underflyt kan du vurdere følgande strategiar:
+
+1. **Skalering av problemet**:
+   - Om mogleg, kan du skalere tal innanfor eit representerbart område før du utfører berekningar. Til dømes kan du utføre operasjonar i logaritmisk skala for å unngå ekstremt store eller små tal.
+
+2. **Bruk av `decimal`-modulen**:
+   - For situasjonar som krev høgare nøyaktigheit eller handtering av svært store tal, kan du bruke Python sitt `decimal`-modul som tilbyr flyttalsrekning med vilkårleg presisjon.
+
+   **Eksempel med `decimal`**:
+   ```python
+   from decimal import Decimal, getcontext
+   getcontext().prec = 50  # Setjar presisjonen til 50 desimalar
+
+   large_number = Decimal('1e1000')
+   small_number = Decimal('1e-1000')
+
+   print(large_number + small_number)  # Vil ikkje føre til overflyt eller underflyt
+   ```
+
+3. **Feilhandsaming**:
+   - Alltid handter potensielle `OverflowError`- og `UnderflowError`-tilfelle med `try-except`-blokk, som i eksempla over, for å sikre at programmet ditt ikkje krasjar ved uventa verdier.
+
+Å vere medviten om og handtere potensielle overflyt- og underflytsproblem er essensielt i program som jobbar med numeriske berekningar, spesielt i vitskapeleg databehandling eller finansielle applikasjonar der presisjon er avgjerande.
+
+## Oppsummering av Veke 34
+I denne veka har vi gjennomgått uttrykk og variable i Python. Vi har sett på forskjellige typer operatorer og hvordan de brukes, inkludert aritmetiske og logiske operatorer. Vi har også diskutert variabeltilordning, både med enkel og sammensatt tilordning, og sett forskjellen mellom muterbare og immuterbare datatyper samt deres bruk med shallow og deep copy. Avslutningsvis undersøkte vi flyttallsrepresentasjon, avrundingsfeil, og problemene knyttet til overflyt og underflyt.
 
 ## Repetisjonsspørsmål
-1. Hva er et beskyttet ord i Python?
-2. Hvordan fungerer heltallsdivisjon i Python, og hvilken operator brukes?
-3. Forklar forskjellen mellom `is` og `==`.
-4. Hva er operatorpresedens, og hvorfor er det viktig?
-5. Hvordan kan man unngå avrundingsfeil ved manipulering av flyttall?
-6. Forklar forskjellen mellom muterbare og immuterbare datatyper.
-7. Nevn to eksempler på sammensatte tilordningsoperatorer og hvordan de brukes.
-8. Hva mener vi med overflyt og underflyt i numeriske beregninger?
 
-## Svar på Repetisjonsspørsmål
-1. Et beskyttet ord er et reserverte ord i Python som ikke kan brukes som variabelnavn, f.eks. `while`, `for`, `if`.
-2. Heltallsdivisjon deler én verdi med en annen og runder ned til nærmeste heltall; operatoren er `//`.
-3. `is` sjekker om to variabler refererer til samme objekt, mens `==` sjekker om verdiene til variablene er like.
-4. Operatorpresedens bestemmer rekkefølgen operasjoner utføres i et uttrykk. Det er viktig for å unngå feilaktige beregninger.
-5. Avrundingsfeil kan unngås ved å omorganisere beregningene eller bruke numeriske metoder som intervalleanalyse.
-6. Muterbare datatyper kan endres etter at de er opprettet (f.eks. `list`), mens immuterbare typer ikke kan endres (f.eks. `tuple`).
-7. To eksempler på sammensatte tilordningsoperatorer er `+=` (x += 2) og `*=` (x *= 2).
-8. Overflyt skjer når et tall er for stort til å representeres av typen, mens underflyt skjer når et tall er for nært null for å kunne representeres nøyaktig.
+<details>
+    <summary>1. Hva er et beskyttet ord i Python?</summary>
+    Et beskyttet ord er et reserverte ord i Python som ikke kan brukes som variabelnavn, f.eks. `while`, `for`, `if`.
+</details>
 
-# Antall Token
-Totalt brukt cirka: 1300 tokens
+<details>
+    <summary>2. Hvordan fungerer heltallsdivisjon i Python, og hvilken operator brukes?</summary>
+    Heltallsdivisjon deler én verdi med en annen og runder ned til nærmeste heltall; operatoren er `//`.
+</details>
+
+<details>
+    <summary>3. Forklar forskjellen mellom `is` og `==`.</summary>
+    `is` sjekker om to variabler refererer til samme objekt, mens `==` sjekker om verdiene til variablene er like.
+</details>
+
+<details>
+    <summary>4. Hva er operatorpresedens, og hvorfor er det viktig?</summary>
+    Operatorpresedens bestemmer rekkefølgen operasjoner utføres i et uttrykk. Det er viktig for å unngå feilaktige beregninger.
+</details>
+
+<details>
+    <summary>5. Hvordan kan man unngå avrundingsfeil ved manipulering av flyttall?</summary>
+    Avrundingsfeil kan unngås ved å omorganisere beregningene eller bruke numeriske metoder som intervalleanalyse.
+</details>
+
+<details>
+    <summary>6. Forklar forskjellen mellom muterbare og immuterbare datatyper.</summary>
+    Muterbare datatyper kan endres etter at de er opprettet (f.eks. `list`), mens immuterbare typer ikke kan endres (f.eks. `tuple`).
+</details>
+
+<details>
+    <summary>7. Nevn to eksempler på sammensatte tilordningsoperatorer og hvordan de brukes.</summary>
+    To eksempler på sammensatte tilordningsoperatorer er `+=` (x += 2) og `*=` (x *= 2).
+</details>
+
+<details>
+    <summary>8. Hva mener vi med overflyt og underflyt i numeriske beregninger?</summary>
+    Overflyt skjer når et tall er for stort til å representeres av typen, mens underflyt skjer når et tall er for nært null for å kunne representeres nøyaktig.
+</details>
+
+
